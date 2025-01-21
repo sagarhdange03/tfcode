@@ -52,8 +52,7 @@ resource "aws_launch_template" "app" {
     security_groups             = [aws_security_group.ec2_sg.id]
   }
 
-  user_data = base64encode(data.template_file.user_data.rendered)
-
+ 
   tag_specifications {
     resource_type = "instance"
     tags = {
@@ -68,12 +67,7 @@ resource "aws_launch_template" "app" {
 
 }
 
-data "template_file" "user_data" {
-  template = file("templates/user_data.tpl")
-  vars = {
-    efs_file_system_id = aws_efs_file_system.app_efs.id
-  }
-}
+
 resource "aws_lb" "app_alb" {
   name               = "${var.env}-alb"
   internal           = false
